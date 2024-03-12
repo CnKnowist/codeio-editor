@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><!-- 网站基本信息 -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codeio</title>
+  <link rel="stylesheet" href="index.css" />
+  <link rel="icon" href="imge/logo.svg" type="image/x-icon">
+  <script type="text/javascript" src="index.js"></script>
+  <script type="text/javascript" src="package/min/vs/loader.js"></script>
+  <script>
+    // 检测是否为移动设备
+    function isMobileDevice() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    // 如果是移动设备，重定向到移动页面
+    if (isMobileDevice()) {
+      window.location.href = "mobile.html";
+    }
+  </script>
+</head>
+<body>
+  <div class="flex-row page">
+    <!-- 侧边栏 -->
+    <div class="flex-col sidebar group">
+      <img class="self-center image_2" src="imge/logo.svg" /> <!-- Logo -->
+      <div class="flex-col self-stretch group_4">
+        <div class="flex-col items-center group_1" id="export-btn">
+          <img class="image_3" src="imge/daochu.svg" /> <!-- 导出按钮图标 -->
+          <span class="font mt-13">导出</span> <!-- 导出按钮文本 -->
+        </div>
+        <div class="flex-col items-center group_5 mt-35" id="code-yulan">
+          <img class="image_4" src="imge/yulan.svg" /> <!-- 预览按钮图标 -->
+          <span class="font text mt-13">预览</span> <!-- 预览按钮文本 -->
+        </div>
+      </div>
+      <div class="flex-col self-stretch group_6">
+        <div class="flex-col items-center self-center group_7" onclick="ai()"><!-- 在index.js 里面更改跳转链接 -->
+          <img class="image_5" src="imge/ai.svg" /> <!-- AI按钮图标 -->
+          <span class="font text_2 mt-7">Ai</span> <!-- AI按钮文本 -->
+        </div>
+        <div class="mt-22 flex-col self-stretch section_2">
+          <div class="flex-col items-center group_8" id="code-chexiao">
+            <img class="image_5" src="imge/chexiao.svg" /> <!-- 撤销按钮图标 -->
+            <span class="mt-8 font_2 text_3">撤销</span> <!-- 撤销按钮文本 -->
+          </div>
+          <div class="mt-26 flex-col items-center group_9">
+            <img class="image_5" src="imge/geshi.svg" id="code-geshi"/>
+            <span class="font_2 text_4 mt-5">格式</span> <!-- 格式化按钮文本 -->
+          </div>
+        </div>
+      </div>
+      <img class="self-center image_6" src="imge/yuque.svg" onclick="onClick()" /> <!-- Yuque按钮图标 --><!-- 在index.js 里面更改跳转链接 -->
+    </div>
+    <!-- 编辑器区域 -->
+    <div class="flex-col section group_2">
+      <div class="flex-col justify-start items-end header">
+        <img class="image" src="imge/github.svg" onclick="github()" /> <!-- Github按钮图标 -->
+      </div>
+      <div class="main group_3" id="monaco-editor-container"></div> <!-- Monaco编辑器容器 -->
+    </div>
+  </div>
+</body>
+<script>
+  require.config({ paths: { 'vs': 'package/min/vs' } });
+  window.MonacoEnvironment = {
+    getWorkerUrl: function(workerId, label) {
+      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                self.MonacoEnvironment = {
+                    baseUrl: 'package/min/'
+                };
+                importScripts('package/min/vs/base/worker/workerMain.js');`
+      )}`;
+    }
+  };
+  require(["vs/editor/editor.main"], function () {
+    var editor = monaco.editor.create(document.getElementById('monaco-editor-container'), {
+      value: "<!DOCTYPE html>", 
+      language: 'html',
+      theme: 'vs',
+      lineNumbers: 'on',
+      automaticLayout: true,
+      fontSize: 22
+    });
+
+    // 导出按钮点击事件
+    document.getElementById('export-btn').addEventListener('click', function () {
+      var code = editor.getValue();
+      var blob = new Blob([code], { type: 'text/html' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+    });
+
+    // 预览按钮点击事件
+    document.getElementById('code-yulan').addEventListener('click', function () {
+      var code = editor.getValue();
+      var htmlContent = encodeURIComponent(code);
+      var newWindow = window.open(); 
+      newWindow.document.write(decodeURIComponent(htmlContent)); 
+    });
+
+    // 撤销按钮点击事件
+    document.getElementById('code-chexiao').addEventListener('click', function () {
+      editor.trigger('source', 'undo'); 
+    });
+
+    // 格式化按钮点击事件
+    document.getElementById('code-geshi').addEventListener('click', function () {
+      editor.getAction('editor.action.formatDocument').run();
+    });
+  });
+</script>
+</html>
+<!-- 本项目由 知匠工作室. 开发。 -->
+<!-- www.knowist.cn -->
+<!-- 以上为原作者，禁止删除！ -->
+
+<!-- 开源仓库：https://github.com/CnKnowist/codeio-editor -->

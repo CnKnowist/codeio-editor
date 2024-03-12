@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 设置页面编码和视口 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 设置网站图标 -->
+    <link rel="icon" href="imge/logo.svg" type="image/x-icon">
+    <title>Codeio 移动端</title>
+    <script>
+        // 检测是否为移动设备
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // 如果不是移动设备，重定向到桌面页面
+        if (!isMobileDevice()) {
+            window.location.href = "index.html";
+        }
+    </script>
+    <style>
+        /* 设置页面样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center; 
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .yellow-text {
+            color: #ffc107; 
+        }
+
+        @media only screen and (min-width: 768px) {
+            /* 在大屏幕上设置容器的内边距 */
+            .container {
+                padding: 0 20%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 网站logo -->
+        <img class="logo" src="imge/logo.svg" alt="Codeio Logo">
+        <!-- 欢迎信息 -->
+        <h1>Welcome to Codeio</h1>
+        <!-- 提示信息 -->
+        <p>请使用桌面设备访问网站</p>
+        <!-- 网站地址 -->
+        <p class="yellow-text">https://codeio.knowist.cn</p>
+    </div>
+</body>
+
+</html>
+
+<!-- 本项目由 知匠工作室. 开发。 -->
+<!-- www.knowist.cn -->
+<!-- 以上为原作者，禁止删除！ -->
+
+<!-- 开源仓库：https://github.com/CnKnowist/codeio-editor -->
